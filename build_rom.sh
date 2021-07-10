@@ -6,7 +6,8 @@ repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync 
 # build rom
 source build/envsetup.sh
 lunch styx_lavender-userdebug
-export TZ=Asia/Dhaka #put before last build command
+export TZ=Asia/kolkata #put before last build command
+SELINUX_IGNORE_NEVERALLOWS=true
 m styx-ota
 
 # upload rom (if you don't need to upload multiple files, then you don't need to edit next line)
