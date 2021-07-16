@@ -9,10 +9,15 @@ task:
   skip: $CIRRUS_BRANCH == 'main'
   only_if: $CIRRUS_REPO_OWNER == 'ROM-builders'
   timeout_in: 30m
-  container:
-    image: apon77/aosp:cirrus
-    cpu: .7
-    memory: 2G
+  persistent_worker:
+    labels:
+      name: AX61-2
+    isolation:
+      container:
+        image: apon77/aosp:cirrus
+        cpu: 2
+        memory: 4G
+
   env_script:
     - env
   show_script:
@@ -39,6 +44,8 @@ task:
     - Test
   timeout_in: 4h
   persistent_worker:
+    labels:
+      name: AX61-1
     isolation:
       container:
         image: apon77/aosp:cirrus
@@ -55,15 +62,14 @@ task:
     - set -exv
 
     - rom_name=$(grep init $CIRRUS_WORKING_DIR/build_rom.sh -m 1 | cut -d / -f 4)
-    - same_rom=$(ps aux|grep /home/cirrus/roms/$rom_name|wc -l)
-#    - if [[ $same_rom -gt 1 ]]; then echo Please wait until same rom other running build is finished; exit 1; fi
 
     - mkdir -p ~/roms/$rom_name
     - cd ~/roms/$rom_name
+
     - rm -rf .repo/local_manifests
     - command=$(head $CIRRUS_WORKING_DIR/build_rom.sh -n $(expr $(grep 'build/envsetup.sh' $CIRRUS_WORKING_DIR/build_rom.sh -n | cut -f1 -d:) - 1))
     - only_sync=$(grep 'repo sync' $CIRRUS_WORKING_DIR/build_rom.sh)
-    - bash -c "$command" || (find -name shallow.lock -delete && find -name index.lock -delete && bash -c "$only_sync") || (repo forall -c 'git checkout .' && bash -c "$only_sync")
+    - bash -c "$command" || (repo forall -c 'git checkout .' && bash -c "$only_sync") || (find -name shallow.lock -delete && find -name index.lock -delete && bash -c "$only_sync") 
 
   build_script:
     - set -exv
@@ -96,7 +102,7 @@ task:
 
     - cd ~/roms/$rom_name
     - engzip=$(ls out/target/product/$device/*-eng*.zip || true)
-    - otazip=$(ls out/target/product/$device/*-ota-*.zip | grep -v "hentai" || true)
+    - otazip=$(ls out/target/product/$device/*-ota-*.zip | grep -v "hentai" | grep -v "evolution" || true)
     - awaken=$(ls out/target/product/$device/Project-Awaken*.zip || true)
     - octavi=$(ls out/target/product/$device/OctaviOS-R*.zip || true)
     - p404=$(ls out/target/product/$device/?.*zip || true)
@@ -121,10 +127,15 @@ task:
   depends_on:
     - Build
   timeout_in: 30m
-  container:
-    image: apon77/aosp:cirrus
-    cpu: .7
-    memory: 2G
+  persistent_worker:
+    labels:
+      name: AX61-2
+    isolation:
+      container:
+        image: apon77/aosp:cirrus
+        cpu: 2
+        memory: 4G
+
   post_build_script:
     - set -e
     - rom_name=$(grep init $CIRRUS_WORKING_DIR/build_rom.sh -m 1 | cut -d / -f 4)
