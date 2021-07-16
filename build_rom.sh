@@ -3,10 +3,9 @@ repo init --depth=1 --no-repo-verify -u https://github.com/NezukoOS/manifest -b 
 git clone https://github.com/flashokiller/manifest_pine.git --depth 1 -b main .repo/local_manifests
 repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j8
 
-# build rommmmmm
+# build rom
 source build/envsetup.sh
 lunch nezuko_pine-userdebug
-export ALLOW_MISSING_DEPENDENCIES=true
 make bacon
 
 # upload rom (if you don't need to upload multiple files, then you don't need to edit next line)
