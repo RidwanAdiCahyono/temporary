@@ -18,6 +18,6 @@ How to use this repository
 * [Instruc tions if you want to use AospExtended custom ROM in your device as a user](https://github.com/Apon77/mido-AospExtended-Apon77/blob/main/Instructions%20for%20users.md)
  
    
-    
+  
   
   
