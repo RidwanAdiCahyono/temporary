@@ -2,13 +2,12 @@
 repo init --depth=1 --no-repo-verify -u git://github.com/DotOS/manifest.git -b dot11 -g default,-device,-mips,-darwin,-notdefault
 git clone https://github.com/Lucifer-morning-star-96/frostmanifest.git --depth 1 -b Dot-os .repo/local_manifests
 repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j8
-     
+      
 # build rom   
 source build/envsetup.sh
 lunch dot_lavender-userdebug
 export TZ=Asia/Kolkata #put before last build command (Time zone)
 export SELINUX_IGNORE_NEVERALLOWS=true
-export USE_GAPPS=true
 make bacon 
 
 # upload rom (if you don't need to upload multiple files, then you don't need to edit next line)
