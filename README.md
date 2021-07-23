@@ -5,7 +5,7 @@ DotOS [Custom ROM](https://www.droidontime.com/) for 10orG (code name: Holland2)
 
 Distributed [here](https://t.me/downloads10orG/)
 
-Estimated installation no.: unknown
+Estimated installation no.: unknown :
 
 How to use this repository
 ---------------------------
